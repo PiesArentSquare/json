@@ -9,7 +9,7 @@ class Json {
     JsonObject m_jsonRoot;
 public:
     Json() = default;
-    ~Json();
+    ~Json() = default;
     static Json &&readJson(std::string_view filename);
 
     JsonObject &root() { return m_jsonRoot; }
