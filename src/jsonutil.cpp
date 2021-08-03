@@ -11,20 +11,20 @@ std::string_view getElementName(size_t index) {
     return name;
 }
 
-JsonObject *getElementAsObject(JsonElement *element, std::string_view const &name) {
+std::shared_ptr<JsonObject> getElementAsObject(std::shared_ptr<JsonElement> element, std::string_view const &name) {
     if (element->m_type == JsonElement::Object)
-        return static_cast<JsonObject *>(element);
+        return std::static_pointer_cast<JsonObject>(element);
     throw InvalidJsonTypeException(name, element->m_type, JsonElement::Object);
     return nullptr;
 }
-JsonObject *getElementAsObject(JsonElement *element, size_t index) { return getElementAsObject(element, getElementName(index)); }
+std::shared_ptr<JsonObject> getElementAsObject(std::shared_ptr<JsonElement> element, size_t index) { return getElementAsObject(element, getElementName(index)); }
 
-JsonArray *getElementAsArray(JsonElement *element, std::string_view const &name) {
+std::shared_ptr<JsonArray> getElementAsArray(std::shared_ptr<JsonElement> element, std::string_view const &name) {
     if (element->m_type == JsonElement::Array)
-        return static_cast<JsonArray *>(element);
+        return std::static_pointer_cast<JsonArray>(element);
     throw InvalidJsonTypeException(name, element->m_type, JsonElement::Array);
     return nullptr;
 }
-JsonArray *getElementAsArray(JsonElement *element, size_t index) { return getElementAsArray(element, getElementName(index)); }
+std::shared_ptr<JsonArray> getElementAsArray(std::shared_ptr<JsonElement> element, size_t index) { return getElementAsArray(element, getElementName(index)); }
 
 }
