@@ -8,18 +8,17 @@ namespace pson {
 class JsonElement {
 public:
     enum Type {
-        Empty,
         Object,
         Array,
         String,
         Int,
-        Float
+        Float,
+        Bool,
+        Null
     } m_type;
 
     static inline std::string_view getTypeName(Type type) {
         switch(type) {
-        case JsonElement::Empty:
-            return "empty";
         case JsonElement::Object:
             return "object";
         case JsonElement::Array:
@@ -30,6 +29,10 @@ public:
             return "int";
         case JsonElement::Float:
             return "float";
+        case JsonElement::Bool:
+            return "bool";
+        case JsonElement::Null:
+            return "null";
         default:
             return "";
         }
@@ -38,6 +41,11 @@ public:
 protected:
     JsonElement(Type type) : m_type(type) {}
     virtual ~JsonElement() {}
+};
+
+class JsonNull final : public JsonElement {
+public:
+    JsonNull() : JsonElement(Null) {}
 };
 
 class InvalidJsonTypeException : public std::runtime_error {

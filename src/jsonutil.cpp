@@ -1,9 +1,10 @@
 #include "jsonutil.h"
 
 namespace pson {
+template<> JsonElement::Type getType<std::string_view>() { return JsonElement::String; }
 template<> JsonElement::Type getType<int>() { return JsonElement::Int; }
 template<> JsonElement::Type getType<float>() { return JsonElement::Float; }
-template<> JsonElement::Type getType<std::string_view>() { return JsonElement::String; }
+template<> JsonElement::Type getType<bool>() { return JsonElement::Bool; }
 
 std::string_view getElementName(size_t index) {
     static std::string name{"element "};

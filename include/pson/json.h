@@ -10,11 +10,12 @@ class Json {
 public:
     Json() = default;
     ~Json() = default;
-    static Json &&readJson(std::string_view filename);
+    static Json &&readJson(std::string const &filename);
 
     JsonObject &root() { return m_jsonRoot; }
+    JsonObject *operator->() { return &m_jsonRoot; }
 
-    void serialize(std::string_view filename);
+    bool serialize(std::string const &filename, int indentSize = 4);
 
 };
 

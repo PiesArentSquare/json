@@ -15,6 +15,7 @@ public:
 
 typedef JsonValue<int> JsonInt;
 typedef JsonValue<float> JsonFloat;
+typedef JsonValue<bool> JsonBool;
 typedef JsonValue<std::string_view> JsonString;
 
 }

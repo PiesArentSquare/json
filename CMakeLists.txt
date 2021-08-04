@@ -5,4 +5,4 @@ project(pson)
 
 include_directories(./include ./src)
 
-add_executable(tests ./src/jsonarray.cpp ./src/jsonobject.cpp ./src/jsonvalue.cpp ./src/jsonutil.cpp ./tests/tests.cpp)
+add_executable(tests ./src/jsonarray.cpp ./src/jsonobject.cpp ./src/jsonvalue.cpp ./src/jsonutil.cpp ./src/json.cpp ./tests/tests.cpp)
