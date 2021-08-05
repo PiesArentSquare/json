@@ -1,12 +1,12 @@
 #pragma once
 
-#include "jsonobject.h"
-#include "jsonarray.h"
+#include "jsonserializer.h"
 
 namespace pson {
 
 class Json {
     JsonObject m_jsonRoot;
+    JsonSerializer serializer;
 public:
     Json() = default;
     ~Json() = default;
