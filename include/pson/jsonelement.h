@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdexcept>
-#include <string>
+#include <sstream>
 
 namespace pson {
 
@@ -17,7 +17,7 @@ public:
         Null
     } m_type;
 
-    static inline std::string_view getTypeName(Type type) {
+    static inline std::string getTypeName(Type type) {
         switch(type) {
         case JsonElement::Object:
             return "object";
@@ -49,21 +49,16 @@ public:
 };
 
 class InvalidJsonTypeException : public std::runtime_error {
-    std::string_view m_property;
+    std::string m_property;
     JsonElement::Type m_type, m_expected;
 public:
-    InvalidJsonTypeException(std::string_view const &property, JsonElement::Type type, JsonElement::Type expectedType)
+    InvalidJsonTypeException(std::string const &property, JsonElement::Type type, JsonElement::Type expectedType)
         : runtime_error("invalid json type error"), m_property(property), m_type(type), m_expected(expectedType) {}
 
     virtual const char* what() const throw() {
-        static std::string str{""};
-        str += runtime_error::what();
-        str += ": '";
-        str += m_property;
-        str += "' is of type ";
-        str += JsonElement::getTypeName(m_type);
-        str += "; expected ";
-        str += JsonElement::getTypeName(m_expected);
+        static std::stringstream ss;
+        ss << runtime_error::what() << ": '" << m_property << "' is of type " << JsonElement::getTypeName(m_type) << "; expected " << JsonElement::getTypeName(m_expected);
+        static std::string str = ss.str();
         return str.c_str();
     }
 };

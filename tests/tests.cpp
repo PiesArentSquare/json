@@ -1,10 +1,11 @@
 #include "pson/json.h"
 
 #include <iostream>
+#include <sstream>
 
 using namespace pson;
 
-int main() {
+void serializeTest() {
 
     Json json{};
 
@@ -30,5 +31,20 @@ int main() {
 
     json->addProperty("testbool", true);
 
-    return json.serialize("testjson.json");
+    json.serialize("testjson.json");
+}
+
+void parseTest() {
+    Json json{};
+    if(!Json::readJson("testjson1.json", json)) {
+        std::cerr << "unable to read json\n";
+    }
+    json.serialize("testjson1output.json");
+}
+
+int main() {
+    serializeTest();
+    parseTest();
+
+    return 0;
 }
