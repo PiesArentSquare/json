@@ -7,12 +7,20 @@
 namespace pson {
 
 bool Json::serialize(std::string const &filepath, int indentSize) {
-    return m_serializer.serialize(filepath, m_jsonRoot, indentSize);
+    try {
+        std::ofstream file(filepath);
+        if (!file) return false;
+        JsonSerializer(file, m_jsonRoot, indentSize);
+        file.close();
+        return false;
+    } catch (std::runtime_error e) {
+        std::cerr << e.what() << '\n';
+        return true;
+    }
 }
 
-bool Json::readJson(std::string const &filename, Json &json) {
-    static JsonParser parser{};
-    return parser.parseFile(filename, json);
+void Json::readJson(std::string const &filename, Json &json) {
+    JsonParser::parseFile(filename, json);
 }
 
 }

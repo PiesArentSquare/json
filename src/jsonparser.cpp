@@ -90,7 +90,7 @@ JsonParser::Number JsonParser::makeNumber() {
     JsonParser::Number number{};
 
     numberStr += m_current;
-    while((isDigit(m_file.peek()) || m_file.peek() == '.')) {
+    while((isDigit(m_input.peek()) || m_input.peek() == '.')) {
         advanceEx();
         if (m_current == '.') {
             if (number.isFloat) throw InvalidJsonParseException("float had too many decimal points", m_currentLine);
@@ -98,7 +98,6 @@ JsonParser::Number JsonParser::makeNumber() {
         }
         numberStr += m_current;
     }
-    // regress();
     if (number.isFloat) number.f = std::stof(numberStr);
     else number.i = std::stoi(numberStr);
     return number;
@@ -114,29 +113,21 @@ bool JsonParser::makeBool() {
     }
 }
 
-bool JsonParser::parseFile(std::string const &filename, Json &json) {
-    m_file.open(filename);
-    if (!m_file.is_open()) {
-        return false;
-    }
-
-    float invalidJson = false;
-
+JsonParser::JsonParser(std::istream &input, Json &json) : m_input(input) {
     advanceEx();
+    do {
+        if (isWhitespace(m_current)) continue;
+        else if (m_current == '{') fillObject(json.getRoot());
+        else throw InvalidJsonParseException("did not start with {", m_currentLine);
+    } while (advance());
+}
 
-    try {
-        do {
-            if (isWhitespace(m_current)) continue;
-            else if (m_current == '{') fillObject(json.getRoot());
-            else throw InvalidJsonParseException("did not start with {", m_currentLine);
-        } while (advance());
-    } catch(InvalidJsonParseException const &e) {
-        std::cerr << e.what();
-        invalidJson = true;
+void JsonParser::parseFile(std::string const &filename, Json &json) {
+    std::ifstream file(filename);
+    if (file.is_open()) {
+        JsonParser(file, json);
+        file.close();
     }
-
-    m_file.close();
-    return !invalidJson;
 }
 
 }

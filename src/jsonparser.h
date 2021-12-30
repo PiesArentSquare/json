@@ -24,7 +24,7 @@ public:
 };
 
 class JsonParser {
-    std::ifstream m_file;
+    std::istream &m_input;
     char m_current;
     size_t m_currentLine = 1;
 
@@ -37,13 +37,13 @@ class JsonParser {
     };
 
     inline bool advance() {
-        m_file.get(m_current);
+        m_input.get(m_current);
         if (m_current == '\n') m_currentLine++; 
-        return !m_file.fail();
+        return !m_input.fail();
     }
 
     inline void advanceEx() {
-        if (!advance()) throw InvalidJsonParseException("prematurely reached EOF", m_currentLine);
+        if (!advance()) throw InvalidJsonParseException("prematurely reached stream end", m_currentLine);
     }
     inline void matchLine(std::string str) {
         for (char c : str) {
@@ -67,7 +67,8 @@ class JsonParser {
     void makeNull();
 
 public:
-    bool parseFile(std::string const &filename, Json &json);
+    JsonParser(std::istream &input, Json &json);
+    static void parseFile(std::string const &filename, Json &json);
 };
 
 }

@@ -32,27 +32,27 @@ void JsonSerializer::serializeItem(std::shared_ptr<JsonElement> const &element) 
 }
 
 void JsonSerializer::serializeObject(std::shared_ptr<JsonObject> const &base) {
-    m_file << "{\n";
+    m_output << "{\n";
     m_currentIndent++;
 
     auto properties = base->getProperties();
     auto propertyOrder = base->getProperyOrder();
     for (auto i = 0; i < propertyOrder.size(); i++) {
         insertIndent();
-        m_file << '"' << propertyOrder[i] << "\": ";
+        m_output << '"' << propertyOrder[i] << "\": ";
         serializeItem(properties[propertyOrder[i]]);
         if (i != propertyOrder.size() - 1)
-            m_file << ',';
-        m_file << '\n';
+            m_output << ',';
+        m_output << '\n';
     }
 
     m_currentIndent--;
     insertIndent();
-    m_file << '}';
+    m_output << '}';
 }
 
 void JsonSerializer::serializeArray(std::shared_ptr<JsonArray> const &base) {
-    m_file << "[\n";
+    m_output << "[\n";
     m_currentIndent++;
 
     auto items = base->getItems();
@@ -60,13 +60,13 @@ void JsonSerializer::serializeArray(std::shared_ptr<JsonArray> const &base) {
         insertIndent();
         serializeItem(*it);
         if (std::next(it) != items.end())
-            m_file << ',';
-        m_file << '\n';
+            m_output << ',';
+        m_output << '\n';
     }
 
     m_currentIndent--;
     insertIndent();
-    m_file << ']';
+    m_output << ']';
 }
 
 }
