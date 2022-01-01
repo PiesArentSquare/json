@@ -1,26 +1,32 @@
 #include "pson/json.h"
 #include "jsonparser.h"
+#include "jsonserializer.h"
 
 #include <fstream>
 #include <iostream>
 
 namespace pson {
 
-bool Json::serialize(std::string const &filepath, int indentSize) {
-    try {
-        std::ofstream file(filepath);
-        if (!file) return false;
-        JsonSerializer(file, m_jsonRoot, indentSize);
-        file.close();
-        return false;
-    } catch (std::runtime_error e) {
-        std::cerr << e.what() << '\n';
-        return true;
-    }
+void Json::writeToFile(std::string const &filename, int indentSize) {
+    JsonSerializer::writeFile(filename, m_jsonRoot, indentSize);
 }
 
-void Json::readJson(std::string const &filename, Json &json) {
-    JsonParser::parseFile(filename, json);
+Json Json::readFromFile(std::string const &filename) {
+    return JsonParser::parseFile(filename);
+}
+
+std::string Json::serialize(int indentSize) {
+    std::stringstream ss;
+    JsonSerializer(ss, m_jsonRoot, indentSize);
+    return ss.str();
+}
+
+
+Json Json::deserialize(std::string &input) {
+    std::stringstream ss(input);
+    Json json;
+    JsonParser(ss, json);
+    return json;
 }
 
 }

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "jsonserializer.h"
+#include "jsonobject.h"
+#include "jsonarray.h"
 
 namespace pson {
 
@@ -13,12 +14,16 @@ public:
     Json &operator=(Json const &) = default;
     Json &operator=(Json &&) = default;
     ~Json() = default;
-    static void readJson(std::string const &filename, Json &json);
+
+    static Json deserialize(std::string &input);
+    std::string serialize(int indentSize = 4);
+
+    static Json readFromFile(std::string const &filename);
+    void writeToFile(std::string const &filename, int indentSize = 4);
 
     auto getRoot() { return m_jsonRoot; }
     auto operator->() { return m_jsonRoot; }
 
-    bool serialize(std::string const &filename, int indentSize = 4);
 };
 
 }

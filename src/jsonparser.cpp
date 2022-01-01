@@ -122,12 +122,14 @@ JsonParser::JsonParser(std::istream &input, Json &json) : m_input(input) {
     } while (advance());
 }
 
-void JsonParser::parseFile(std::string const &filename, Json &json) {
+Json JsonParser::parseFile(std::string const &filename) {
+    Json json;
     std::ifstream file(filename);
     if (file.is_open()) {
         JsonParser(file, json);
         file.close();
     }
+    return json;
 }
 
 }

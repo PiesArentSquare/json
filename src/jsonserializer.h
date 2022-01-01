@@ -1,10 +1,10 @@
 #pragma once
 
-#include <ostream>
+#include <fstream>
 #include <iomanip>
 
-#include "jsonobject.h"
-#include "jsonarray.h"
+#include <pson/jsonobject.h>
+#include <pson/jsonarray.h>
 
 namespace pson {
 
@@ -34,6 +34,14 @@ public:
     JsonSerializer(std::ostream &output, std::shared_ptr<JsonObject> const &root, int indentSize = 4)
         : m_output(output), m_indentSize(indentSize) {
         serializeObject(root);
+    }
+
+    inline static void writeFile(std::string const &filename,
+    std::shared_ptr<JsonObject> const &root, int indentSize = 4) {
+        std::ofstream file(filename);
+        if (file)
+            JsonSerializer(file, root, indentSize);
+        file.close();
     }
 };
 

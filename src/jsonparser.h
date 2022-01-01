@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-#include "pson/json.h"
+#include <pson/json.h>
 
 namespace pson {
 
@@ -68,7 +68,7 @@ class JsonParser {
 
 public:
     JsonParser(std::istream &input, Json &json);
-    static void parseFile(std::string const &filename, Json &json);
+    static Json parseFile(std::string const &filename);
 };
 
 }
