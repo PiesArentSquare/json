@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project(Pson)
 
-add_library(pson SHARED
+add_library(pson STATIC
     src/jsonobject.cpp
     src/jsonarray.cpp
     src/jsonvalue.cpp

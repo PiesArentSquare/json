@@ -26,21 +26,21 @@ class JsonSerializer {
     inline void serializeBool(bool value) { m_output << (value ? "true" : "false"); }
     inline void serializeNull() { m_output << "null"; }
 
-    void serializeItem(std::shared_ptr<JsonElement> const &element);
-    void serializeObject(std::shared_ptr<JsonObject> const &base);
-    void serializeArray(std::shared_ptr<JsonArray> const &base);
+    void serializeItem(std::shared_ptr<JsonElement> const &element, bool whitespace);
+    void serializeObject(std::shared_ptr<JsonObject> const &base, bool whitespace);
+    void serializeArray(std::shared_ptr<JsonArray> const &base, bool whitespace);
 
 public:
-    JsonSerializer(std::ostream &output, std::shared_ptr<JsonObject> const &root, int indentSize = 4)
+    JsonSerializer(std::ostream &output, std::shared_ptr<JsonObject> const &root, bool whitespace, int indentSize = 4)
         : m_output(output), m_indentSize(indentSize) {
-        serializeObject(root);
+        serializeObject(root, whitespace);
     }
 
     inline static void writeFile(std::string const &filename,
-    std::shared_ptr<JsonObject> const &root, int indentSize = 4) {
+    std::shared_ptr<JsonObject> const &root, bool whitespace, int indentSize = 4) {
         std::ofstream file(filename);
         if (file)
-            JsonSerializer(file, root, indentSize);
+            JsonSerializer(file, root, indentSize, whitespace);
         file.close();
     }
 };

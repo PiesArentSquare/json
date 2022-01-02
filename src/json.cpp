@@ -7,17 +7,17 @@
 
 namespace pson {
 
-void Json::writeToFile(std::string const &filename, int indentSize) {
-    JsonSerializer::writeFile(filename, m_jsonRoot, indentSize);
+void Json::writeToFile(std::string const &filename, bool whitespace, int indentSize) {
+    JsonSerializer::writeFile(filename, m_jsonRoot, whitespace, indentSize);
 }
 
 Json Json::readFromFile(std::string const &filename) {
     return JsonParser::parseFile(filename);
 }
 
-std::string Json::serialize(int indentSize) {
+std::string Json::serialize(bool whitespace, int indentSize) {
     std::stringstream ss;
-    JsonSerializer(ss, m_jsonRoot, indentSize);
+    JsonSerializer(ss, m_jsonRoot, whitespace, indentSize);
     return ss.str();
 }
 

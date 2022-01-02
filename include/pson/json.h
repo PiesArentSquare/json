@@ -16,10 +16,10 @@ public:
     ~Json() = default;
 
     static Json deserialize(std::string &input);
-    std::string serialize(int indentSize = 4);
+    std::string serialize(bool whitespace = true, int indentSize = 4);
 
     static Json readFromFile(std::string const &filename);
-    void writeToFile(std::string const &filename, int indentSize = 4);
+    void writeToFile(std::string const &filename, bool whitespace = true, int indentSize = 4);
 
     auto getRoot() { return m_jsonRoot; }
     auto operator->() { return m_jsonRoot; }
